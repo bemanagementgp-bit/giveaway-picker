@@ -2,7 +2,7 @@
 
 Pick random winners from the comments of an Instagram giveaway (or any list of participants). Paste, upload or import comments, apply the giveaway rules, draw winners with a Web Crypto seed and a SHA-256 verification hash, and export a winner certificate. Everything runs in the user's browser; nothing is uploaded.
 
-**Live:** https://__SITE_URL__/ (placeholder – replaced after deploy)
+**Live:** https://giveaway-tool.vercel.app/ (placeholder – replaced after deploy)
 
 ## Features
 
@@ -49,7 +49,7 @@ No build step. Open the printed URL.
 Deploy the folder as a static site on Vercel (`vercel --prod`). After the first deploy, replace the placeholder everywhere:
 
 ```bash
-sed -i 's/__SITE_URL__/giveaway-tool.vercel.app/g' index.html privacy.html terms.html robots.txt sitemap.xml config.js README.md
+sed -i 's/giveaway-tool.vercel.app/giveaway-tool.vercel.app/g' index.html privacy.html terms.html robots.txt sitemap.xml config.js README.md
 ```
 
 Then run `node _shared/apply-brand.js giveaway-picker` from the repo root to inject the shared header, hero, footer and lead card. Add `giveaway` to `bm-payments/catalog.js` (APPS) if not already there.
