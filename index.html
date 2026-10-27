@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Instagram Giveaway Picker – Pick Comment Winners Fairly (Free) | Giveaway Picker</title>
+  <meta name="description" content="Free Instagram giveaway picker. Paste or import post comments, filter duplicates, mentions and bots, then draw random winners with a verifiable hash. No sign-up needed.">
+  <link rel="canonical" href="https://__SITE_URL__/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://__SITE_URL__/">
+  <meta property="og:title" content="Instagram Giveaway Picker – Pick Comment Winners Fairly (Free) | Giveaway Picker">
+  <meta property="og:description" content="Paste or import the comments of your Instagram post, apply the giveaway rules and pick random winners with a verification hash. Free, no sign-up, runs in your browser.">
+  <meta property="og:image" content="https://__SITE_URL__/favicon.svg">
+  <meta property="og:site_name" content="Giveaway Picker">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Instagram Giveaway Picker – Pick Comment Winners Fairly (Free)">
+  <meta name="twitter:description" content="Random Instagram comment picker with dedupe, mention and hashtag rules, a provably fair draw and a winner certificate. Free, no sign-up.">
+  <meta name="twitter:image" content="https://__SITE_URL__/favicon.svg">
+  <meta name="theme-color" content="#f97316">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Giveaway Picker">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Giveaway Picker – Free Instagram Giveaway Winner Picker",
+    "url": "https://__SITE_URL__/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (web browser)",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Pick random winners from the comments of an Instagram giveaway. Paste, upload or import comments, deduplicate users, require mentions, hashtags or keywords, exclude bots and accounts, then draw winners and alternates with a SHA-256 verification hash and a shareable winner certificate.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": [
+      "Paste, CSV/TXT/JSON upload or manual entry of participants",
+      "Deduplicate by username or one entry per comment",
+      "Rules: required mentions, hashtag or keyword, minimum length, exclusions, bot filter, bonus entries",
+      "Random draw with Web Crypto seed and SHA-256 verification hash",
+      "Roulette, countdown or instant reveal with optional sound",
+      "Winner certificate PNG (square and Story) and ready-to-post caption",
+      "Pro: Instagram Graph API import, up to 20 winners, draw history, custom branding"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is Giveaway Picker free?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. Pasting or uploading comments, all eligibility rules, up to 3 winners plus 5 alternates, the verification hash and the winner certificate are free with no sign-up, for up to 500 eligible participants per draw. Free certificates carry a small 'Giveaway Picker · free' badge. The one-time Pro upgrade removes the badge and adds up to 20 winners, unlimited participants, automatic Instagram import, draw history and custom certificate branding." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I get the comments from my Instagram post into the picker?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Three ways. Open the post on instagram.com on a desktop browser, load all comments, select and copy them, then paste into the Paste tab: the tool detects the username at the start of each comment. You can also upload a CSV, TXT or JSON export from any comment export tool; columns named username, user, author or name and text, comment or message are detected automatically. Pro users with an Instagram Business or Creator account can import the comments directly through the official Instagram Graph API by pasting the post URL and an access token." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the draw really random, and how can my followers verify it?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Each draw generates a seed with the browser's Web Crypto API (crypto.getRandomValues), which is cryptographically random. The winners are derived from that seed over the alphabetically sorted list of eligible usernames, and the tool publishes a SHA-256 verification hash of that list plus the seed. Anyone with the same participant list and seed can replay the draw in the tool and get exactly the same winners and hash. Nothing is sent to a server, so there is nothing to tamper with." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can it pick several winners and alternates?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. The free version picks 1 to 3 winners and 0 to 5 alternates (backup winners in case someone does not claim the prize or broke the rules). A user can only win once per draw, even if they left several comments or have bonus entries. Pro raises the limit to 20 winners per draw." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does it work for Facebook, TikTok, YouTube or Twitter comments?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The parser is built for Instagram usernames, but any list of participants works: paste one entry per line, upload a CSV from the platform's export or add names manually. The rules (dedupe, required mention, keyword, exclusions) and the fair draw are platform-independent. Automatic import is Instagram-only." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Giveaway Picker affiliated with Instagram or Meta?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. Giveaway Picker is an independent tool and is not affiliated with, endorsed by or sponsored by Instagram, Facebook or Meta Platforms. Your giveaway must comply with Instagram's Promotion Guidelines (including a complete release of Instagram by each participant and an acknowledgement that the promotion is not sponsored, endorsed or administered by Instagram) and with the laws of the countries where it runs." }
+      }
+    ]
+  }
+  </script>
+  <script src="/config.js"></script>
+  <script src="/monetize.js"></script>
+  <script src="/studio.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <div class="navbar">
+    <a class="brand" href="/" aria-label="Giveaway Picker home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><span class="brand-name">Giveaway Picker</span><span class="brand-desc">Instagram giveaway winner picker</span></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <details class="more-tools">
+        <summary class="btn btn-ghost btn-sm">More tools ▾</summary>
+        <div class="menu">
+          <a href="https://quickinvoice-tool.vercel.app"><span class="mi">Q</span>QuickInvoice<small>Invoices</small></a>
+          <a href="https://ratecalc-tool.vercel.app"><span class="mi">R</span>RateCalc<small>Freelance rates</small></a>
+          <a href="https://qrforge-tool.vercel.app"><span class="mi">Q</span>QRForge<small>QR codes</small></a>
+          <a href="https://squish-tool.vercel.app"><span class="mi">S</span>Squish<small>Image compressor</small></a>
+          <a href="https://growthcalc-tool.vercel.app"><span class="mi">G</span>GrowthCalc<small>Compound interest</small></a>
+          <a href="https://subnetkit-tool.vercel.app"><span class="mi">N</span>SubnetKit<small>IP subnets</small></a>
+          <a href="https://shotstudio-tool.vercel.app"><span class="mi">S</span>Screenshot Studio<small>Screenshot mockups</small></a>
+          <a href="https://mockuplab-tool.vercel.app"><span class="mi">M</span>Social Mockup Lab<small>Chat & post mockups</small></a>
+          <a href="https://carouselmaker-tool.vercel.app"><span class="mi">C</span>Carousel Maker<small>Carousel slides</small></a>
+          <a href="https://creativeresize-tool.vercel.app"><span class="mi">R</span>Creative Resize<small>Social formats</small></a>
+          <a href="https://framelab-tool.vercel.app"><span class="mi">F</span>Frame Lab<small>Photo frames & mockups</small></a>
+          <a href="https://giveaway-tool.vercel.app" class="current"><span class="mi">G</span>Giveaway Picker<small>Instagram giveaways</small></a>
+          <a href="https://sizeconverter-tool.vercel.app"><span class="mi">Z</span>Size Converter<small>Image & video resizer</small></a>
+        </div>
+      </details>
+      <span class="sep" aria-hidden="true"></span>
+      <span class="brand-by">by <b>Be Management</b></span>
+      <button class="btn btn-sm hidden" id="installBtn" onclick="installApp()" title="Install this tool as an app">⤓ Install</button>
+      <button class="btn btn-primary btn-sm" onclick="openPro('nav')">Pro</button>
+      <button class="btn icon-btn btn-sm" onclick="toggleTheme()" aria-label="Toggle theme">◐</button>
+    </nav>
+    </div>
+  </div>
+</header>
+
+<section class="hero container">
+  <span class="eyebrow"><span class="dot" aria-hidden="true"></span>Be Management Tools · Creative · Giveaways</span>
+  <h1>Instagram Giveaway Winner Picker</h1>
+  <p class="tagline">Paste or import the comments of your post, set the rules (mentions, hashtags, no duplicates) and draw the winners with an animated, verifiable result you can share.</p>
+  <div class="badges">
+  <span class="badge">100% free</span>
+  <span class="badge">No sign-up</span>
+  <span class="badge">Runs in your browser</span>
+  <span class="badge">Provably fair</span>
+  <span class="badge">Winner certificate</span>
+  </div>
+</section>
+
+<main class="container">
+  <div class="studio">
+    <div class="studio-stage">
+      <div class="stage-meta">
+        <div class="seg stage-seg" id="stageSeg" role="group" aria-label="Stage view">
+          <button type="button" data-value="draw">Draw</button>
+          <button type="button" data-value="cert">Certificate</button>
+        </div>
+        <span class="stage-info" id="stageInfo">Eligible: <b>0</b> users</span>
+      </div>
+      <div class="studio-canvas draw-canvas" id="stage">
+        <div class="draw-view" id="drawView">
+          <div class="draw-counter" aria-live="polite">
+            <span class="num" id="stageUsers">0</span>
+            <span class="lbl">eligible participants</span>
+            <span class="sub" id="stageEntries">0 entries</span>
+          </div>
+          <div class="reveal" id="reveal" aria-live="assertive">
+            <div class="reveal-tag" id="revealTag">Ready</div>
+            <div class="reveal-name" id="revealName">Who wins?</div>
+            <div class="reveal-sub" id="revealSub">Load participants, set the rules and press Draw.</div>
+          </div>
+          <div class="winners-grid" id="winnersGrid"></div>
+          <button type="button" class="btn btn-primary btn-lg draw-btn" id="drawBtn">🎲 Draw winners</button>
+        </div>
+        <canvas id="certCanvas" class="hidden" aria-label="Winner certificate preview"></canvas>
+        <canvas id="confetti" class="confetti" aria-hidden="true"></canvas>
+      </div>
+      <div class="studio-actions" role="toolbar" aria-label="Result actions">
+        <button type="button" class="btn btn-primary" id="dlCert">⬇ Download certificate</button>
+        <button type="button" class="btn" id="copyCert">Copy image</button>
+        <button type="button" class="btn" id="copyCaption">Copy caption</button>
+        <button type="button" class="btn" id="shareBtn">Share</button>
+      </div>
+      <details class="fair" id="fairBox">
+        <summary>How this draw is fair</summary>
+        <div class="fair-body">
+          <ul>
+            <li><strong>Uniform random.</strong> The seed of every draw comes from <code>crypto.getRandomValues</code>, the browser's cryptographic random generator. Each eligible entry has exactly the same chance; a user can win once per draw.</li>
+            <li><strong>Published hash.</strong> The verification hash is SHA-256 of the alphabetically sorted eligible usernames plus the seed. Share it with the winners: anyone with the same list and seed can replay the draw here and get the same result.</li>
+            <li><strong>No server.</strong> Comments, rules and results never leave your browser. There is nothing to edit after the fact.</li>
+          </ul>
+          <div class="row replay-row">
+            <input type="text" id="seedInput" placeholder="Paste a seed to replay a draw" aria-label="Seed to replay" maxlength="64" spellcheck="false">
+            <button type="button" class="btn btn-sm" id="replayBtn">Replay</button>
+          </div>
+          <p class="hint">Giveaway Picker is not affiliated with Instagram or Meta. Giveaways must follow Instagram's Promotion Guidelines and the law of each country where they run.</p>
+        </div>
+      </details>
+      <div class="ad-slot horizontal" data-slot="below-tool"></div>
+    </div>
+
+    <aside class="studio-panel">
+      <details class="panel" open>
+        <summary>Participants</summary>
+        <div class="panel-body">
+          <div class="seg" id="modeSeg" role="group" aria-label="Input mode">
+            <button type="button" data-value="paste">Paste</button>
+            <button type="button" data-value="upload">Upload</button>
+            <button type="button" data-value="manual">Manual</button>
+            <button type="button" data-value="instagram" id="modeInstagram">Instagram <span class="pro-badge">PRO</span></button>
+          </div>
+
+          <div class="mode-pane" id="panePaste">
+            <label for="pasteText" class="sr-only">Comments, one per line</label>
+            <textarea id="pasteText" rows="8" placeholder="@maria.lopez Done! @carla @julieta 🙌&#10;juan_perez: I want this!! @pedro&#10;sofi.rt tagging @ana @lu #giveaway" spellcheck="false"></textarea>
+            <div class="row-between" style="margin-top:8px">
+              <span class="hint" style="margin:0" id="pasteCount">0 comments detected</span>
+              <span class="row" style="gap:6px">
+                <button type="button" class="btn btn-sm btn-ghost" id="clearPaste">Clear</button>
+                <button type="button" class="btn btn-sm" id="loadSample">Load sample</button>
+              </span>
+            </div>
+            <p class="hint">Formats: <code>@user comment</code>, <code>user: comment</code>, <code>user comment</code>, or comments copied from instagram.com on desktop (username on its own line).</p>
+          </div>
+
+          <div class="mode-pane hidden" id="paneUpload">
+            <div class="upload-drop" id="uploadDrop" tabindex="0" role="button" aria-label="Drop a CSV, TXT or JSON file or press Enter to choose">
+              <div class="ic">📄</div><b>Drop a CSV, TXT or JSON export</b><small>Columns username/user/author/name and text/comment/message are detected. Plain lists work too.</small>
+            </div>
+            <p class="hint" id="uploadInfo">No file loaded.</p>
+            <div class="row" style="gap:6px"><button type="button" class="btn btn-sm btn-ghost" id="clearUpload">Clear</button></div>
+          </div>
+
+          <div class="mode-pane hidden" id="paneManual">
+            <label for="chipInput">Add usernames</label>
+            <div class="row" style="gap:6px">
+              <input type="text" id="chipInput" placeholder="@username, then Enter" autocomplete="off" spellcheck="false" style="flex:1;min-width:0">
+              <button type="button" class="btn btn-sm" id="chipAdd">Add</button>
+            </div>
+            <div class="chip-list" id="chipList" aria-label="Manual participants"></div>
+            <div class="row" style="gap:6px;margin-top:8px"><button type="button" class="btn btn-sm btn-ghost" id="clearManual">Clear all</button></div>
+          </div>
+
+          <div class="mode-pane hidden" id="paneInstagram">
+            <div class="ig-locked hidden" id="igLocked">
+              <p><strong>Import comments automatically</strong> from an Instagram Business or Creator account through the official Graph API.</p>
+              <button type="button" class="btn btn-primary btn-sm" onclick="openPro('instagram')">Unlock with Pro</button>
+            </div>
+            <div id="igForm">
+              <div class="field compact"><label for="igUrl">Post URL or media ID</label><input type="text" id="igUrl" placeholder="https://www.instagram.com/p/XXXXXXXXX/ or 1784…" spellcheck="false"></div>
+              <div class="field compact"><label for="igToken">User access token</label><input type="password" id="igToken" placeholder="EAAG…" autocomplete="off" spellcheck="false"></div>
+              <label class="checkbox"><input type="checkbox" id="igRemember"> Remember the token on this device</label>
+              <p class="hint">By default the token is kept in memory only and forgotten when you close the tab.</p>
+              <div class="row" style="gap:6px;margin-top:10px">
+                <button type="button" class="btn btn-primary btn-sm" id="igImport">Import comments</button>
+                <button type="button" class="btn btn-sm btn-ghost" id="clearImport">Clear</button>
+              </div>
+              <p class="hint" id="igStatus"></p>
+              <details class="howto">
+                <summary>How to get an access token</summary>
+                <ol>
+                  <li>Your Instagram account must be a <strong>Business or Creator</strong> account linked to a Facebook Page.</li>
+                  <li>Open the <a href="https://developers.facebook.com/tools/explorer/" target="_blank" rel="noopener">Meta Graph API Explorer</a> (or use your own Meta app).</li>
+                  <li>Generate a <strong>User token</strong> with the permissions <code>instagram_basic</code>, <code>instagram_manage_comments</code> and <code>pages_read_engagement</code> (plus <code>pages_show_list</code>).</li>
+                  <li>Paste the token above together with the post URL. The tool finds your Instagram account through <code>/me/accounts</code>, resolves the post and reads every comment page by page.</li>
+                </ol>
+                <p class="hint">Tokens from the Explorer expire after about an hour. Replies to comments are not included.</p>
+              </details>
+            </div>
+          </div>
+
+          <p class="part-summary" id="partSummary">No participants yet.</p>
+          <p class="notice hidden" id="limitNotice"></p>
+          <details class="preview-list">
+            <summary>Preview parsed comments</summary>
+            <div class="table-wrap"><table class="entry-table"><thead><tr><th>User</th><th>Comment</th></tr></thead><tbody id="entryList"></tbody></table></div>
+          </details>
+        </div>
+      </details>
+
+      <details class="panel" open>
+        <summary>Rules</summary>
+        <div class="panel-body">
+          <div class="switch-row first"><span>One entry per user<small>Off: every comment counts as an entry</small></span><label class="switch"><input type="checkbox" id="dedupe" checked aria-label="One entry per user"><i></i></label></div>
+          <div class="grid-2 compact-grid">
+            <div class="field compact"><label for="mentions">Mentions required (@)</label><input type="number" id="mentions" min="0" max="10" step="1" value="0"></div>
+            <div class="field compact"><label for="minLen">Min. comment length</label><input type="number" id="minLen" min="0" max="500" step="1" value="0"></div>
+          </div>
+          <div class="field compact"><label for="keyword">Required hashtag or keyword</label><input type="text" id="keyword" placeholder="#giveaway or any word" spellcheck="false"></div>
+          <div class="field compact"><label for="owner">Exclude the account owner</label><input type="text" id="owner" placeholder="@yourbrand" spellcheck="false"></div>
+          <div class="field compact">
+            <label for="excludeInput">Exclude usernames</label>
+            <div class="row" style="gap:6px"><input type="text" id="excludeInput" placeholder="@user, then Enter" autocomplete="off" spellcheck="false" style="flex:1;min-width:0"><button type="button" class="btn btn-sm" id="excludeAdd">Add</button></div>
+            <div class="chip-list" id="excludeChips" aria-label="Excluded usernames"></div>
+          </div>
+          <div class="switch-row"><span>Block obvious bots<small>Digits-only names, "bot", "giveaway", "free"</small></span><label class="switch"><input type="checkbox" id="bots" checked aria-label="Block obvious bots"><i></i></label></div>
+          <div class="field compact" style="margin-top:8px"><label for="bonusKeyword">Bonus entry when the comment includes</label><input type="text" id="bonusKeyword" placeholder="e.g. #shared or 'story'" spellcheck="false"></div>
+          <div class="eligible" id="eligibleLine">Eligible: <b>0</b> users / <b>0</b> entries</div>
+          <ul class="breakdown" id="breakdown"></ul>
+        </div>
+      </details>
+
+      <details class="panel" open>
+        <summary>Draw</summary>
+        <div class="panel-body">
+          <div class="grid-2 compact-grid">
+            <div class="field compact"><label for="winnersN">Winners</label><input type="number" id="winnersN" min="1" max="3" step="1" value="1"><span class="hint" id="winnersHint">Free: up to 3 · Pro: up to 20</span></div>
+            <div class="field compact"><label for="alternatesN">Alternates</label><input type="number" id="alternatesN" min="0" max="5" step="1" value="1"></div>
+          </div>
+          <p class="sub-label">Animation</p>
+          <div class="seg" id="animSeg" role="group" aria-label="Animation style">
+            <button type="button" data-value="roulette">Roulette</button>
+            <button type="button" data-value="countdown">Countdown</button>
+            <button type="button" data-value="instant">Instant</button>
+          </div>
+          <div class="switch-row"><span>Sound<small>Ticks and a fanfare on reveal</small></span><label class="switch"><input type="checkbox" id="sound" aria-label="Sound"><i></i></label></div>
+          <button type="button" class="btn btn-primary btn-block" id="drawBtn2" style="margin-top:10px">🎲 Draw winners</button>
+        </div>
+      </details>
+
+      <details class="panel" open>
+        <summary>Result</summary>
+        <div class="panel-body">
+          <p class="hint" id="resultEmpty">No draw yet. Winners, alternates and the verification hash will appear here.</p>
+          <div class="hidden" id="resultBox">
+            <p class="sub-label" style="margin-top:0">Winners</p>
+            <ol class="winner-list" id="winnerList"></ol>
+            <p class="sub-label">Alternates</p>
+            <ol class="winner-list alt" id="altList"></ol>
+            <p class="sub-label">Verification</p>
+            <div class="hash-row">
+              <code id="hashShort">—</code>
+              <button type="button" class="btn btn-sm" id="copyHash">Copy hash</button>
+            </div>
+            <p class="hint">Seed <code id="seedShow">—</code> · <span id="resultMeta"></span></p>
+            <div class="row" style="gap:6px;margin-top:10px">
+              <button type="button" class="btn btn-sm" id="repeatBtn">Repeat draw</button>
+              <button type="button" class="btn btn-sm" id="excludeRedrawBtn">Exclude winners &amp; draw again</button>
+            </div>
+          </div>
+          <p class="sub-label">Certificate</p>
+          <div class="field compact"><label for="postUrl">Post URL (optional)</label><input type="url" id="postUrl" placeholder="https://www.instagram.com/p/…" spellcheck="false"></div>
+          <div class="seg" id="certSeg" role="group" aria-label="Certificate format">
+            <button type="button" data-value="square">1080 × 1080</button>
+            <button type="button" data-value="story">Story 1080 × 1920</button>
+          </div>
+          <div class="brand-box" id="brandBox">
+            <p class="sub-label">Branding <span class="pro-badge">PRO</span></p>
+            <div class="row" style="gap:8px">
+              <div class="inline-color"><input type="color" id="certBg1" value="#f97316" aria-label="Background start color"><span class="hint" style="margin:0">Start</span></div>
+              <div class="inline-color"><input type="color" id="certBg2" value="#7c3aed" aria-label="Background end color"><span class="hint" style="margin:0">End</span></div>
+              <div class="inline-color"><input type="color" id="certAccent" value="#ffffff" aria-label="Text color"><span class="hint" style="margin:0">Text</span></div>
+            </div>
+            <div class="row" style="gap:6px;margin-top:8px">
+              <button type="button" class="btn btn-sm" id="logoBtn">Upload logo</button>
+              <button type="button" class="btn btn-sm btn-ghost" id="logoClear">Remove logo</button>
+              <input type="file" id="logoFile" accept="image/*" class="hidden" aria-label="Logo file">
+            </div>
+            <button type="button" class="btn btn-sm btn-primary brand-unlock" id="brandUnlock" onclick="openPro('branding')">Unlock branding with Pro</button>
+          </div>
+          <div class="field compact" style="margin-top:12px"><label for="caption">Caption to announce</label><textarea id="caption" rows="4" placeholder="Draw first to generate a caption"></textarea></div>
+        </div>
+      </details>
+
+      <details class="panel" id="historyPanel">
+        <summary>Draw history <span class="pro-badge">PRO</span></summary>
+        <div class="panel-body">
+          <div id="historyLocked">
+            <p class="hint">Pro keeps your last 20 draws (date, winners, hash) on this device and can exclude previous winners from new draws.</p>
+            <button type="button" class="btn btn-primary btn-sm" onclick="openPro('history')">Unlock with Pro</button>
+          </div>
+          <div class="hidden" id="historyBody">
+            <div class="switch-row first"><span>Exclude previous winners<small>From all draws in the history</small></span><label class="switch"><input type="checkbox" id="excludePrev" aria-label="Exclude previous winners"><i></i></label></div>
+            <ul class="history-list" id="historyList"></ul>
+            <button type="button" class="btn btn-sm btn-ghost" id="clearHistory">Clear history</button>
+          </div>
+        </div>
+      </details>
+
+      <div class="ad-slot" data-slot="sidebar-1"></div>
+      <div class="card pro-card">
+        <h3>Go Pro <span class="pro-badge">LIFETIME</span></h3>
+        <ul>
+          <li>Import comments from Instagram automatically</li>
+          <li>Up to 20 winners, unlimited participants</li>
+          <li>No watermark on certificates</li>
+          <li>Draw history &amp; custom branding</li>
+        </ul>
+        <button class="btn btn-primary btn-block" onclick="openPro('sidebar')">Get Pro – <span data-pro-price>$9</span> one-time</button>
+      </div>
+      <div class="card lead-card" id="leadCard" hidden>
+        <h3>Giveaway ideas that grow accounts</h3>
+        <p class="hint">Rules that work, legal basics and new creator tools, once or twice a month. No spam.</p>
+        <form class="lead-form" onsubmit="return subscribeNewsletter(event)">
+          <input type="email" name="email" required placeholder="you@email.com" aria-label="Email address" autocomplete="email">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
+          <button class="btn btn-primary" type="submit">Subscribe</button>
+        </form>
+        <p class="hint tiny">No spam. Unsubscribe anytime.</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<section class="content container">
+  <div class="features">
+    <div class="feature"><div class="ic">📋</div><h3>Smart comment parsing</h3><p>Paste comments straight from the post, upload a CSV/TXT/JSON export or type names. Usernames, mentions and hashtags are detected automatically.</p></div>
+    <div class="feature"><div class="ic">✅</div><h3>Rules that mirror your giveaway</h3><p>One entry per user, required mentions, hashtag or keyword, minimum length, exclusions, a bot filter and bonus entries, with a live breakdown of what was removed.</p></div>
+    <div class="feature"><div class="ic">🔐</div><h3>Provably fair draw</h3><p>A Web Crypto seed, a SHA-256 verification hash and a replay function let anyone confirm the winners. Nothing is uploaded to a server.</p></div>
+    <div class="feature"><div class="ic">🏆</div><h3>Winner certificate</h3><p>A 1080 × 1080 post or 1080 × 1920 Story image with the winners, date, participant count and hash, plus a ready-to-post caption.</p></div>
+  </div>
+
+  <h2>How to run an Instagram giveaway that is easy to verify</h2>
+  <p>The best giveaways have rules you can check from the comments alone. "Follow us, like this post and tag two friends" is popular because the tag part leaves a trace: every valid entry is a comment with at least two @mentions. Follows and likes cannot be read from a comment list, so treat them as conditions you verify manually for the winner only (open the profile, check the follow) rather than as filters for everyone. Keep the giveaway open for a clear window, 3 to 7 days works well, state the end date and time zone in the caption and say how and when the winner will be announced.</p>
+  <p>In Giveaway Picker those rules become switches: <strong>One entry per user</strong> ignores repeated comments from the same account (turn it off if you promised "every comment is an entry"), <strong>Mentions required</strong> drops comments with fewer @tags than you asked for, and <strong>Required hashtag or keyword</strong> handles "comment #done" or "tell us your favorite color" mechanics. A <strong>bonus entry</strong> keyword rewards people who shared the post to their story or used a second hashtag, without complicated multipliers.</p>
+
+  <h2>How to export the comments from your post</h2>
+  <h3>Paste from the post on desktop</h3>
+  <p>Open the post on instagram.com in a desktop browser, click "View all comments" and the "+" button until every comment is loaded, select the whole comment area with the mouse and copy. Paste into the tool: it understands the desktop layout where the username is on its own line, followed by the comment and the "Reply" and "likes" lines, and it also understands one-line formats such as <code>@user comment</code> or <code>user: comment</code>.</p>
+  <h3>Third-party exports</h3>
+  <p>Comment export tools and browser extensions usually produce a CSV or JSON file. Drop it in the Upload tab: columns called username, user, author or name and text, comment or message are matched automatically, and a plain list of names (one per line) works as well.</p>
+  <h3>The official Graph API for business accounts</h3>
+  <p>If your account is a Business or Creator account connected to a Facebook Page, Meta's Instagram Graph API can list every comment of a post. Giveaway Picker Pro does this directly from your browser with a user access token that has the <code>instagram_basic</code>, <code>instagram_manage_comments</code> and <code>pages_read_engagement</code> permissions. The token is never sent anywhere except to graph.facebook.com and is kept in memory unless you choose to remember it on your device.</p>
+
+  <h2>Pick fairly and announce the winner</h2>
+  <p>Once the eligible count looks right, choose the number of winners and alternates and press Draw. The roulette or countdown animation is nice for a screen recording you can post as a Reel or Story; the result is the same either way, because the winners are derived from the seed, not from the animation. Save the verification hash and seed with your announcement. If a winner does not reply within the deadline you set (48 hours is common), move on to the first alternate instead of drawing again, so nobody can accuse you of re-rolling until a friend won.</p>
+  <p>Announce with the certificate image or the generated caption, tag the winners and ask them to DM you. Never ask for payment details or passwords in a comment, and warn your followers that you will not contact them from a different account; impersonation scams are the most common problem after an Instagram giveaway.</p>
+
+  <h2>Legal basics</h2>
+  <ul>
+    <li><strong>Include official rules</strong>: who can enter (age, countries), start and end dates, how winners are chosen and contacted, the prize and its value.</li>
+    <li><strong>Instagram's Promotion Guidelines</strong> require a complete release of Instagram by each participant and a statement that the promotion is not sponsored, endorsed, administered by or associated with Instagram. Never say "Instagram sponsors" or imply an affiliation.</li>
+    <li><strong>Age and regional restrictions</strong> matter: alcohol, gambling-related or adult prizes are limited or banned in many countries, and some countries (for example Italy, Brazil and several US states) regulate promotional contests or require registration or a notary.</li>
+    <li><strong>No purchase necessary</strong> where sweepstakes law applies; a prize that depends on buying something may be a lottery.</li>
+    <li>Keep the participant list, seed and hash for a reasonable time in case a result is questioned.</li>
+  </ul>
+
+  <h2>Sorteo de Instagram gratis</h2>
+  <p lang="es">¿Buscás una app para hacer un sorteo de Instagram gratis? Giveaway Picker elige al ganador al azar entre los comentarios de tu publicación: pegá los comentarios, activá "una participación por usuario", pedí una cantidad mínima de menciones (@amigos) o un hashtag, excluí a tu propia cuenta y a los bots, y hacé el sorteo con animación de ruleta o cuenta regresiva. El resultado incluye un hash de verificación para que cualquiera pueda comprobar que el sorteo fue justo, y un certificado listo para publicar en el feed o en historias. No requiere registro y nada sale de tu navegador.</p>
+
+  <h2>Frequently asked questions</h2>
+  <div class="faq">
+    <details><summary>Is Giveaway Picker free?</summary><p>Yes. Pasting or uploading comments, all eligibility rules, up to 3 winners plus 5 alternates, the verification hash and the winner certificate are free with no sign-up, for up to 500 eligible participants per draw. Free certificates carry a small "Giveaway Picker · free" badge. The one-time Pro upgrade removes the badge and adds up to 20 winners, unlimited participants, automatic Instagram import, draw history and custom certificate branding.</p></details>
+    <details><summary>How do I get the comments from my Instagram post into the picker?</summary><p>Three ways. Open the post on instagram.com on a desktop browser, load all comments, select and copy them, then paste into the Paste tab: the tool detects the username at the start of each comment. You can also upload a CSV, TXT or JSON export from any comment export tool; columns named username, user, author or name and text, comment or message are detected automatically. Pro users with an Instagram Business or Creator account can import the comments directly through the official Instagram Graph API by pasting the post URL and an access token.</p></details>
+    <details><summary>Is the draw really random, and how can my followers verify it?</summary><p>Each draw generates a seed with the browser's Web Crypto API (<code>crypto.getRandomValues</code>), which is cryptographically random. The winners are derived from that seed over the alphabetically sorted list of eligible usernames, and the tool publishes a SHA-256 verification hash of that list plus the seed. Anyone with the same participant list and seed can replay the draw in the tool and get exactly the same winners and hash. Nothing is sent to a server, so there is nothing to tamper with.</p></details>
+    <details><summary>Can it pick several winners and alternates?</summary><p>Yes. The free version picks 1 to 3 winners and 0 to 5 alternates (backup winners in case someone does not claim the prize or broke the rules). A user can only win once per draw, even if they left several comments or have bonus entries. Pro raises the limit to 20 winners per draw.</p></details>
+    <details><summary>Does it work for Facebook, TikTok, YouTube or Twitter comments?</summary><p>The parser is built for Instagram usernames, but any list of participants works: paste one entry per line, upload a CSV from the platform's export or add names manually. The rules (dedupe, required mention, keyword, exclusions) and the fair draw are platform-independent. Automatic import is Instagram-only.</p></details>
+    <details><summary>Is Giveaway Picker affiliated with Instagram or Meta?</summary><p>No. Giveaway Picker is an independent tool and is not affiliated with, endorsed by or sponsored by Instagram, Facebook or Meta Platforms. Your giveaway must comply with Instagram's Promotion Guidelines (including a complete release of Instagram by each participant and an acknowledgement that the promotion is not sponsored, endorsed or administered by Instagram) and with the laws of the countries where it runs.</p></details>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <span class="brand-mark lg" aria-hidden="true"></span>
+      <div>
+        <strong>Be Management Tools</strong>
+        <p>A collection of free, private tools that run entirely in your browser. Giveaway Picker is the instagram giveaway winner picker of the family, built and maintained by Be Management.</p>
+      </div>
+    </div>
+    <div class="footer-tools">
+      <strong>More free tools</strong>
+      <ul>
+        <li><a href="https://quickinvoice-tool.vercel.app">QuickInvoice · Invoices</a></li>
+        <li><a href="https://ratecalc-tool.vercel.app">RateCalc · Freelance rates</a></li>
+        <li><a href="https://qrforge-tool.vercel.app">QRForge · QR codes</a></li>
+        <li><a href="https://squish-tool.vercel.app">Squish · Image compressor</a></li>
+        <li><a href="https://growthcalc-tool.vercel.app">GrowthCalc · Compound interest</a></li>
+        <li><a href="https://subnetkit-tool.vercel.app">SubnetKit · IP subnets</a></li>
+        <li><a href="https://shotstudio-tool.vercel.app">Screenshot Studio · Screenshot mockups</a></li>
+        <li><a href="https://mockuplab-tool.vercel.app">Social Mockup Lab · Chat & post mockups</a></li>
+        <li><a href="https://carouselmaker-tool.vercel.app">Carousel Maker · Carousel slides</a></li>
+        <li><a href="https://creativeresize-tool.vercel.app">Creative Resize · Social formats</a></li>
+        <li><a href="https://framelab-tool.vercel.app">Frame Lab · Photo frames & mockups</a></li>
+        <li><a href="https://giveaway-tool.vercel.app" class="current">Giveaway Picker · Instagram giveaways</a></li>
+        <li><a href="https://sizeconverter-tool.vercel.app">Size Converter · Image & video resizer</a></li>
+      </ul>
+    </div>
+    <div class="footer-meta">
+      <span>© <span data-year></span> Be Management · Giveaway Picker. Free, fair and transparent giveaway picker.</span>
+      <span><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- Pro modal -->
+<div class="modal" id="proModal" role="dialog" aria-modal="true">
+  <div class="card">
+    <button class="btn btn-sm close" onclick="closePro()">✕</button>
+    <h3>Upgrade to Giveaway Picker Pro <span class="pro-badge">LIFETIME</span></h3>
+    <div class="price"><span id="proPrice"></span> <small>one-time</small></div>
+    <ul>
+      <li>Up to 20 winners</li>
+      <li>Unlimited participants</li>
+      <li>Import comments from Instagram automatically</li>
+      <li>No watermark on certificates</li>
+      <li>Draw history &amp; exclude past winners</li>
+      <li>Custom certificate branding</li>
+    </ul>
+    <button class="btn btn-primary btn-block" onclick="goCheckout()">Get Pro</button>
+    <p class="hint" style="margin-top:12px">Already purchased? <a href="#" onclick="document.getElementById('licenseRow').classList.toggle('hidden');return false">Enter license key</a></p>
+    <div class="row hidden" id="licenseRow"><input id="licenseKey" placeholder="License key"><button class="btn" onclick="activateLicense(document.getElementById('licenseKey').value)">Activate</button></div>
+  </div>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>

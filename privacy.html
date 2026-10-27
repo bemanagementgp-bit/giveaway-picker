@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="theme-color" content="#f97316">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Giveaway Picker">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy – Giveaway Picker</title>
+  <meta name="description" content="Privacy policy for Giveaway Picker, the free in-browser Instagram giveaway winner picker. Comments and results stay on your device.">
+  <link rel="canonical" href="https://__SITE_URL__/privacy">
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/config.js"></script>
+  <script src="/monetize.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <div class="navbar">
+    <a class="brand" href="/" aria-label="Giveaway Picker home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text"><span class="brand-name">Giveaway Picker</span><span class="brand-desc">Instagram giveaway winner picker</span></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <details class="more-tools">
+        <summary class="btn btn-ghost btn-sm">More tools ▾</summary>
+        <div class="menu">
+          <a href="https://quickinvoice-tool.vercel.app"><span class="mi">Q</span>QuickInvoice<small>Invoices</small></a>
+          <a href="https://ratecalc-tool.vercel.app"><span class="mi">R</span>RateCalc<small>Freelance rates</small></a>
+          <a href="https://qrforge-tool.vercel.app"><span class="mi">Q</span>QRForge<small>QR codes</small></a>
+          <a href="https://squish-tool.vercel.app"><span class="mi">S</span>Squish<small>Image compressor</small></a>
+          <a href="https://growthcalc-tool.vercel.app"><span class="mi">G</span>GrowthCalc<small>Compound interest</small></a>
+          <a href="https://subnetkit-tool.vercel.app"><span class="mi">N</span>SubnetKit<small>IP subnets</small></a>
+          <a href="https://shotstudio-tool.vercel.app"><span class="mi">S</span>Screenshot Studio<small>Screenshot mockups</small></a>
+          <a href="https://mockuplab-tool.vercel.app"><span class="mi">M</span>Social Mockup Lab<small>Chat & post mockups</small></a>
+          <a href="https://carouselmaker-tool.vercel.app"><span class="mi">C</span>Carousel Maker<small>Carousel slides</small></a>
+          <a href="https://creativeresize-tool.vercel.app"><span class="mi">R</span>Creative Resize<small>Social formats</small></a>
+          <a href="https://framelab-tool.vercel.app"><span class="mi">F</span>Frame Lab<small>Photo frames & mockups</small></a>
+          <a href="https://giveaway-tool.vercel.app" class="current"><span class="mi">G</span>Giveaway Picker<small>Instagram giveaways</small></a>
+          <a href="https://sizeconverter-tool.vercel.app"><span class="mi">Z</span>Size Converter<small>Image & video resizer</small></a>
+        </div>
+      </details>
+      <span class="sep" aria-hidden="true"></span>
+      <span class="brand-by">by <b>Be Management</b></span>
+      <button class="btn btn-sm hidden" id="installBtn" onclick="installApp()" title="Install this tool as an app">⤓ Install</button>
+      <a class="btn btn-sm" href="/">← Back to tool</a>
+      <button class="btn icon-btn btn-sm" onclick="toggleTheme()" aria-label="Toggle theme">◐</button>
+    </nav>
+    </div>
+  </div>
+</header>
+
+<section class="content container">
+  <h1>Privacy Policy</h1>
+  <p>Last updated: <span data-year></span></p>
+
+  <h2>Your comments and results stay on your device</h2>
+  <p>Giveaway Picker runs entirely inside your web browser. The comments you paste, upload or import, the rules you set, the seed, the verification hash, the winners and the certificate image are processed in your browser's memory and <strong>never transmitted to our servers</strong>. There is no upload endpoint and no server-side draw.</p>
+
+  <h2>Data stored in your browser</h2>
+  <p>We use <code>localStorage</code> to remember your participant list, rules, draw settings, the last result, certificate options, the theme and, if you purchase Giveaway Picker Pro, your license status and key plus your draw history (last 20 draws). An Instagram access token is kept in memory only and discarded when the tab closes, unless you explicitly tick "Remember the token on this device", in which case it is stored in <code>localStorage</code> until you untick the option. All of this stays on your device and can be cleared at any time from your browser settings.</p>
+
+  <h2>Instagram import (Pro)</h2>
+  <p>When you use the Instagram import, your browser sends requests directly to Meta's Graph API (<code>graph.facebook.com</code>) with the access token you provide, to list your connected Instagram accounts, find the post and read its comments. We never see the token or the comments; the data flows between your browser and Meta only, under <a href="https://www.facebook.com/privacy/policy/" rel="noopener" target="_blank">Meta's privacy policy</a> and platform terms. You are responsible for using the imported comments in accordance with Instagram's terms and applicable law.</p>
+
+  <h2>Analytics</h2>
+  <p>If enabled, we use Google Analytics 4 to understand how the tool is used (page views, which features are used, approximate region). Analytics never receives participant names, comments or results. Google may set cookies or use similar technologies for this purpose. You can opt out with the <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener" target="_blank">Google Analytics opt-out add-on</a> or by blocking analytics scripts.</p>
+
+  <h2>Advertising</h2>
+  <p>Giveaway Picker may display advertisements served by Google AdSense to keep the tool free. Google and its partners may use cookies (including the DoubleClick cookie) to serve ads based on your prior visits to this and other websites. You can opt out of personalized advertising at <a href="https://www.google.com/settings/ads" rel="noopener" target="_blank">Google Ads Settings</a> or via <a href="https://www.aboutads.info/choices/" rel="noopener" target="_blank">aboutads.info</a>. Visitors in the EEA and UK will be asked for consent where required.</p>
+
+  <h2>Payments and license validation</h2>
+  <p>Giveaway Picker Pro purchases are handled by a third-party payment processor (such as Mercado Pago, Lemon Squeezy or Stripe). We do not see or store your card details. When you enter a license key, the key and a device label are sent to the license service to confirm it is valid; no participant data is included. The processor's own privacy policy applies to the checkout and license check.</p>
+
+  <h2>Third-party resources</h2>
+  <p>Fonts are loaded from Google Fonts, which may log standard request data (IP address, user agent). No other third-party scripts are loaded unless analytics or advertising are enabled.</p>
+
+  <h2>Children</h2>
+  <p>Giveaway Picker is not directed at children under 13 and we do not knowingly collect personal information from them.</p>
+
+  <h2>Changes</h2>
+  <p>We may update this policy from time to time. Changes will be posted on this page with an updated date.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about privacy? Contact us at <a href="mailto:hello@__SITE_URL__">hello@__SITE_URL__</a>.</p>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <span class="brand-mark lg" aria-hidden="true"></span>
+      <div>
+        <strong>Be Management Tools</strong>
+        <p>A collection of free, private tools that run entirely in your browser. Giveaway Picker is the instagram giveaway winner picker of the family, built and maintained by Be Management.</p>
+      </div>
+    </div>
+    <div class="footer-tools">
+      <strong>More free tools</strong>
+      <ul>
+        <li><a href="https://quickinvoice-tool.vercel.app">QuickInvoice · Invoices</a></li>
+        <li><a href="https://ratecalc-tool.vercel.app">RateCalc · Freelance rates</a></li>
+        <li><a href="https://qrforge-tool.vercel.app">QRForge · QR codes</a></li>
+        <li><a href="https://squish-tool.vercel.app">Squish · Image compressor</a></li>
+        <li><a href="https://growthcalc-tool.vercel.app">GrowthCalc · Compound interest</a></li>
+        <li><a href="https://subnetkit-tool.vercel.app">SubnetKit · IP subnets</a></li>
+        <li><a href="https://shotstudio-tool.vercel.app">Screenshot Studio · Screenshot mockups</a></li>
+        <li><a href="https://mockuplab-tool.vercel.app">Social Mockup Lab · Chat & post mockups</a></li>
+        <li><a href="https://carouselmaker-tool.vercel.app">Carousel Maker · Carousel slides</a></li>
+        <li><a href="https://creativeresize-tool.vercel.app">Creative Resize · Social formats</a></li>
+        <li><a href="https://framelab-tool.vercel.app">Frame Lab · Photo frames & mockups</a></li>
+        <li><a href="https://giveaway-tool.vercel.app" class="current">Giveaway Picker · Instagram giveaways</a></li>
+        <li><a href="https://sizeconverter-tool.vercel.app">Size Converter · Image & video resizer</a></li>
+      </ul>
+    </div>
+    <div class="footer-meta">
+      <span>© <span data-year></span> Be Management · Giveaway Picker. Free, fair and transparent giveaway picker.</span>
+      <span><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
