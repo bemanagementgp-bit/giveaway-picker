@@ -19,13 +19,43 @@
     excludePrev: false, result: null, sampleLoaded: false
   };
   const S = Studio.restore(STATE_KEY, DEF);
-  ['rules', 'draw', 'cert'].forEach(k => { S[k] = Object.assign({}, DEF[k], S[k] || {}); });
-  ['uploaded', 'manual', 'imported'].forEach(k => { if (!Array.isArray(S[k])) S[k] = []; });
-  if (!Array.isArray(S.rules.exclude)) S.rules.exclude = [];
+  // ---- restored state / history are untrusted (localStorage): enforce types, enums, lengths ----
+  const MAX_ENTRIES = 200000;
+  const str = (v, max) => (typeof v === 'string' ? v : typeof v === 'number' ? String(v) : '').slice(0, max || 2000);
+  const isHex = v => typeof v === 'string' && /^#[0-9a-f]{6}$/i.test(v);
+  const cleanEntries = a => (Array.isArray(a) ? a : []).filter(e => e && typeof e === 'object').slice(0, MAX_ENTRIES).map(e => ({ user: str(e.user, 60), text: str(e.text, 2200) }));
+  const cleanUsers = a => (Array.isArray(a) ? a : []).filter(u => typeof u === 'string').slice(0, 20000).map(u => u.slice(0, 60));
+  function cleanResult(r) {
+    if (!r || typeof r !== 'object' || !Array.isArray(r.winners)) return null;
+    return {
+      seed: /^[0-9a-f]{8,64}$/i.test(r.seed) ? r.seed : '', hash: /^[0-9a-f]{64}$/i.test(r.hash) ? r.hash : '',
+      winners: cleanEntries(r.winners).slice(0, PRO_MAX_WINNERS), alternates: cleanEntries(r.alternates).slice(0, MAX_ALTERNATES),
+      count: Math.max(0, Number(r.count) || 0), entries: Math.max(0, Number(r.entries) || 0), date: str(r.date, 40), postUrl: str(r.postUrl, 500)
+    };
+  }
+  ['rules', 'draw', 'cert'].forEach(k => { S[k] = Studio.safeAssign({}, DEF[k], S[k] && typeof S[k] === 'object' ? S[k] : {}); });
+  S.uploaded = cleanEntries(S.uploaded); S.imported = cleanEntries(S.imported); S.manual = cleanUsers(S.manual);
+  S.rules.exclude = cleanUsers(S.rules.exclude);
+  ['keyword', 'owner', 'bonus'].forEach(k => { S.rules[k] = str(S.rules[k], 200); });
+  S.rules.dedupe = !!S.rules.dedupe; S.rules.bots = !!S.rules.bots;
+  S.rules.mentions = clamp(parseInt(S.rules.mentions, 10) || 0, 0, 10); S.rules.minLen = clamp(parseInt(S.rules.minLen, 10) || 0, 0, 500);
+  S.draw.winners = clamp(parseInt(S.draw.winners, 10) || 1, 1, PRO_MAX_WINNERS); S.draw.alternates = clamp(parseInt(S.draw.alternates, 10) || 0, 0, MAX_ALTERNATES);
+  if (!['roulette', 'countdown', 'instant'].includes(S.draw.anim)) S.draw.anim = DEF.draw.anim;
+  S.draw.sound = !!S.draw.sound;
+  if (!['square', 'story'].includes(S.cert.format)) S.cert.format = DEF.cert.format;
+  ['bg1', 'bg2', 'accent'].forEach(k => { if (!isHex(S.cert[k])) S.cert[k] = DEF.cert[k]; });
+  if (!/^data:image\/png;base64,[a-z0-9+/=]+$/i.test(S.cert.logo || '')) S.cert.logo = '';
+  ['pasteText'].forEach(k => { S[k] = str(S[k], 5 * 1024 * 1024); });
+  ['uploadName', 'importName', 'postUrl'].forEach(k => { S[k] = str(S[k], 500); });
+  if (!['draw', 'cert'].includes(S.stageView)) S.stageView = 'draw';
+  S.result = cleanResult(S.result);
   if (!['paste', 'upload', 'manual', 'instagram'].includes(S.mode)) S.mode = 'paste';
   if (S.mode === 'instagram' && !isPro()) S.mode = 'paste';
-  let history = [];
-  try { history = JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); if (!Array.isArray(history)) history = []; } catch (e) { history = []; }
+  let history = Studio.safeParse(localStorage.getItem(HIST_KEY) || '[]', []);
+  history = (Array.isArray(history) ? history : []).filter(h => h && typeof h === 'object').slice(0, 20).map(h => ({
+    date: str(h.date, 40), hash: /^[0-9a-f]{64}$/i.test(h.hash) ? h.hash : '', seed: /^[0-9a-f]{8,64}$/i.test(h.seed) ? h.seed : '',
+    winners: cleanUsers(h.winners).slice(0, PRO_MAX_WINNERS), alternates: cleanUsers(h.alternates).slice(0, MAX_ALTERNATES), count: Math.max(0, Number(h.count) || 0)
+  }));
   let igToken = '';          // memory only unless "remember" is ticked
   let logoImg = null;        // decoded certificate logo (Pro)
   let drawing = false;
@@ -169,7 +199,7 @@ agus.acosta: @tomas.acosta @lucho_acosta
     text = text.replace(/^﻿/, '');
     if (ext === 'json' || /^\s*[\[{]/.test(text)) {
       try {
-        let j = JSON.parse(text);
+        let j = Studio.safeParse(text, null);
         if (j && !Array.isArray(j)) j = j.data || j.comments || j.items || j.results || j.rows || Object.values(j).find(v => Array.isArray(v)) || [];
         if (Array.isArray(j)) return { entries: fromObjects(j), kind: 'JSON' };
       } catch (e) { /* fall through to text */ }
@@ -495,7 +525,7 @@ agus.acosta: @tomas.acosta @lucho_acosta
     const pro = isPro();
     $('historyLocked').classList.toggle('hidden', pro); $('historyBody').classList.toggle('hidden', !pro);
     if (!pro) return;
-    $('historyList').innerHTML = history.length ? history.map(h => `<li><span class="d">${new Date(h.date).toLocaleString()}</span><b>${h.winners.map(u => '@' + esc(u)).join(', ')}</b><small>${h.count} participants · hash ${esc(h.hash.slice(0, 10))} · seed <code>${esc(h.seed)}</code></small></li>`).join('') : '<li class="hint">No draws yet.</li>';
+    $('historyList').innerHTML = history.length ? history.map(h => `<li><span class="d">${esc(new Date(h.date).toLocaleString())}</span><b>${h.winners.map(u => '@' + esc(u)).join(', ')}</b><small>${esc(h.count)} participants · hash ${esc(h.hash.slice(0, 10))} · seed <code>${esc(h.seed)}</code></small></li>`).join('') : '<li class="hint">No draws yet.</li>';
   }
   function setStageView(v) {
     S.stageView = v; stageSeg.set(v);
@@ -539,6 +569,8 @@ agus.acosta: @tomas.acosta @lucho_acosta
     let j = await graph(path, params), out = (j.data || []).slice();
     while (j.paging && j.paging.next && out.length < max) {
       if (onPage) onPage(out.length);
+      // Only follow pagination links that point back to the Graph API host.
+      if (typeof j.paging.next !== 'string' || !j.paging.next.startsWith(GRAPH.replace(/v[\d.]+\/$/, ''))) break;
       const r = await fetch(j.paging.next); j = await r.json();
       if (j.error) throw new Error(j.error.message || 'Graph API error');
       out = out.concat(j.data || []);
@@ -577,7 +609,7 @@ agus.acosta: @tomas.acosta @lucho_acosta
       }
       st.textContent = 'Reading comments…';
       const comments = await graphAll(mediaId + '/comments', { fields: 'username,text,timestamp,like_count', limit: 50, access_token: token }, 100000, n => { st.textContent = 'Read ' + n + ' comments…'; });
-      S.imported = comments.map(c => ({ user: cleanUser(c.username), text: String(c.text || '').trim() })).filter(e => e.user);
+      S.imported = comments.filter(c => c && typeof c === 'object').map(c => ({ user: cleanUser(c.username).slice(0, 60), text: String(c.text || '').trim().slice(0, 2200) })).filter(e => e.user);
       S.importName = 'Instagram ' + (ref.shortcode ? '/p/' + ref.shortcode : 'media ' + mediaId);
       st.textContent = 'Imported ' + S.imported.length + ' comments from ' + S.importName + '.';
       toast('Imported ' + S.imported.length + ' comments'); track('instagram_import', { count: S.imported.length });
@@ -603,11 +635,12 @@ agus.acosta: @tomas.acosta @lucho_acosta
 
   Studio.dropzone($('uploadDrop'), async files => {
     const f = files[0]; if (!f) return;
+    if (f.size > 20 * 1024 * 1024) { toast('Could not read the file'); return; } // import size cap (20 MB)
     try {
       const text = await f.text();
       const res = parseFile(f.name, text);
       if (!res.entries.length) { toast('No participants found in ' + f.name); return; }
-      S.uploaded = res.entries; S.uploadName = f.name; save();
+      S.uploaded = cleanEntries(res.entries); S.uploadName = String(f.name).slice(0, 200); save();
       $('uploadInfo').textContent = `${f.name} (${res.kind}) · ${fmt(res.entries.length)} comments`;
       setMode('upload'); toast('Loaded ' + fmt(res.entries.length) + ' comments'); track('upload', { kind: res.kind, count: res.entries.length });
     } catch (e) { toast('Could not read the file'); }
